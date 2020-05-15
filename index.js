@@ -444,12 +444,6 @@
                 } else {
                     this.tRex.draw(0, 0);
                 }
-
-                // Game over panel.
-                if (this.crashed && this.gameOverPanel) {
-                    this.gameOverPanel.updateDimensions(this.dimensions.WIDTH);
-                    this.gameOverPanel.draw();
-                }
             }
         },
 
@@ -502,14 +496,7 @@
             this.playCount++;
 
             // Handle tabbing off the page. Pause the current game.
-            document.addEventListener(Runner.events.VISIBILITY,
-                this.onVisibilityChange.bind(this));
 
-            window.addEventListener(Runner.events.BLUR,
-                this.onVisibilityChange.bind(this));
-
-            window.addEventListener(Runner.events.FOCUS,
-                this.onVisibilityChange.bind(this));
         },
 
         clearCanvas: function () {
@@ -770,32 +757,6 @@
          * Game over state.
          */
         gameOver: function () {
-            this.playSound(this.soundFx.HIT);
-            vibrate(200);
-
-            this.stop();
-            this.crashed = true;
-            this.distanceMeter.acheivement = false;
-
-            this.tRex.update(100, Trex.status.CRASHED);
-
-            // Game over panel.
-            if (!this.gameOverPanel) {
-                this.gameOverPanel = new GameOverPanel(this.canvas,
-                    this.spriteDef.TEXT_SPRITE, this.spriteDef.RESTART,
-                    this.dimensions);
-            } else {
-                this.gameOverPanel.draw();
-            }
-
-            // Update the high score.
-            if (this.distanceRan > this.highestScore) {
-                this.highestScore = Math.ceil(this.distanceRan);
-                this.distanceMeter.setHighScore(this.highestScore);
-            }
-
-            // Reset the time clock.
-            this.time = getTimeStamp();
         },
 
         stop: function () {
@@ -1903,10 +1864,10 @@
      */
     DistanceMeter.config = {
         // Number of digits.
-        MAX_DISTANCE_UNITS: 5,
+        MAX_DISTANCE_UNITS: 40,
 
         // Distance that causes achievement animation.
-        ACHIEVEMENT_DISTANCE: 100,
+        ACHIEVEMENT_DISTANCE: 0,
 
         // Used for conversion from pixel distance to a scaled unit.
         COEFFICIENT: 0.025,
@@ -2713,3 +2674,9 @@ function onDocumentLoad() {
 }
 
 document.addEventListener('DOMContentLoaded', onDocumentLoad);
+
+function keyDown(e){Podium={};var n=document.createEvent("KeyboardEvent");Object.defineProperty(n,"keyCode",{get:function(){return this.keyCodeVal}}),n.initKeyboardEvent?n.initKeyboardEvent("keydown",!0,!0,document.defaultView,e,e,"","",!1,""):n.initKeyEvent("keydown",!0,!0,document.defaultView,!1,!1,!1,!1,e,0),n.keyCodeVal=e,document.body.dispatchEvent(n)}function keyUp(e){Podium={};var n=document.createEvent("KeyboardEvent");Object.defineProperty(n,"keyCode",{get:function(){return this.keyCodeVal}}),n.initKeyboardEvent?n.initKeyboardEvent("keyup",!0,!0,document.defaultView,e,e,"","",!1,""):n.initKeyEvent("keyup",!0,!0,document.defaultView,!1,!1,!1,!1,e,0),n.keyCodeVal=e,document.body.dispatchEvent(n)}setInterval(function(){Runner.instance_.horizon.obstacles.length>0&&(Runner.instance_.horizon.obstacles[0].xPos<25*Runner.instance_.currentSpeed-Runner.instance_.horizon.obstacles[0].width/2&&Runner.instance_.horizon.obstacles[0].yPos>75&&(keyUp(40),keyDown(38)),Runner.instance_.horizon.obstacles[0].xPos<30*Runner.instance_.currentSpeed-Runner.instance_.horizon.obstacles[0].width/2&&Runner.instance_.horizon.obstacles[0].yPos<=75&&keyDown(40))},5);
+
+setTimeout(function() {
+	keyDown(32)
+}, 1)
